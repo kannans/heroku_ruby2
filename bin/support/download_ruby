@@ -66,6 +66,6 @@ EOF
 echo "Coping to another $RUBY_BOOTSTRAP_DIR"
 
 tar xzf "$RUBY_BOOTSTRAP_DIR/ruby.tgz" -C "$RUBY_BOOTSTRAP_DIR"
-tar xzf "$RUBY_BOOTSTRAP_DIR/ruby2.tgz" -C "$RUBY_BOOTSTRAP_DIR"
+# tar xzf "$RUBY_BOOTSTRAP_DIR/ruby2.tgz" -C "$RUBY_BOOTSTRAP_DIR"
 echo `ls $RUBY_BOOTSTRAP_DIR`
 echo `date`
