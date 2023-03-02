@@ -30,7 +30,7 @@ module LanguagePack
       urlpath = if path.include?("ruby")
         "https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-2.6.5.tgz -s -o"
       else
-        "#{@host_url.join(urlpath)} -s -o"
+        "#{@host_url.join(path)} -s -o"
       end
 
       curl = curl_command(urlpath)
