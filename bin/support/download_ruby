@@ -26,7 +26,7 @@ curl_retry_on_18() {
 regex=".*ruby_version = [\'\"]([0-9]+\.[0-9]+\.[0-9]+)[\'\"].*"
 if [[ $(cat "$BIN_DIR/../buildpack.toml") =~ $regex ]]
   then
-    heroku_buildpack_ruby_url="https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-20/ruby-2.6.5.tgz"
+    heroku_buildpack_ruby_url="https://heroku-buildpack-ruby.s3.us-east-1.amazonaws.com/$STACK/ruby-${BASH_REMATCH[1]}.tgz"
   else
     echo "Could not detect ruby version to bootstrap"
     exit 1
@@ -35,6 +35,7 @@ fi
 mkdir -p "$RUBY_BOOTSTRAP_DIR"
 
 echo `date`
+echo heroku_buildpack_ruby_url
 
 curl_retry_on_18 --fail --retry 3 --retry-connrefused --connect-timeout ${CURL_CONNECT_TIMEOUT:-3} --silent --location -o "$RUBY_BOOTSTRAP_DIR/ruby.tgz" "$heroku_buildpack_ruby_url" || {
 cat<<EOF
@@ -49,8 +50,22 @@ EOF
   exit 1
 }
 
+curl_retry_on_18 --fail --retry 3 --retry-connrefused --connect-timeout ${CURL_CONNECT_TIMEOUT:-3} --silent --location -o "$RUBY_BOOTSTRAP_DIR/ruby2.tgz" "https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-2.6.5.tgz" || {
+cat<<EOF
+  Failed to download a Ruby executable for bootstrapping!
+
+  This is most likely a temporary internal error. If the problem
+  persists, make sure that you are not running a custom or forked
+  version of the Heroku Ruby buildpack which may need updating.
+
+  url: https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-2.6.5.tgz
+EOF
+  exit 1
+}
+
 echo "Coping to another $RUBY_BOOTSTRAP_DIR"
 
 tar xzf "$RUBY_BOOTSTRAP_DIR/ruby.tgz" -C "$RUBY_BOOTSTRAP_DIR"
-
+tar xzf "$RUBY_BOOTSTRAP_DIR/ruby2.tgz" -C "$RUBY_BOOTSTRAP_DIR"
+echo `ls $RUBY_BOOTSTRAP_DIR`
 echo `date`
