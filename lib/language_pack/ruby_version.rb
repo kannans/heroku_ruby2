@@ -52,13 +52,14 @@ module LanguagePack
 
     # https://github.com/bundler/bundler/issues/4621
     def version_for_download
-      if rbx?
-        "rubinius-#{engine_version}"
-      elsif patchlevel_is_significant? && @patchlevel && @patchlevel.sub(/p/, '').to_i >= 0
-        @version
-      else
-        version_without_patchlevel
-      end
+      # if rbx?
+      #   "rubinius-#{engine_version}"
+      # elsif patchlevel_is_significant? && @patchlevel && @patchlevel.sub(/p/, '').to_i >= 0
+      #   @version
+      # else
+      #   version_without_patchlevel
+      # end
+      "ruby-2.6.5"
     end
 
     def file_name
