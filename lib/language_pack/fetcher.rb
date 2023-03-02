@@ -27,13 +27,13 @@ module LanguagePack
     end
 
     def fetch_untar(path, files_to_extract = nil)
-      # urlpath = if path.include?("ruby")
-      #   "https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-2.6.5.tgz -s -o"
-      # else
-      #   "#{@host_url.join(path)} -s -o"
-      # end
+      urlpath = if path.include?("ruby")
+        "https://s3-external-1.amazonaws.com/heroku-buildpack-ruby/heroku-18/ruby-2.6.5.tgz -s -o"
+      else
+        "#{@host_url.join(path)} -s -o"
+      end
 
-      curl = curl_command(path)
+      curl = curl_command(urlpath)
       run! "#{curl} - | tar zxf - #{files_to_extract}",
         error_class: FetchError,
         max_attempts: 3
