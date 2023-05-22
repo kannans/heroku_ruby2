@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    ci-queue (0.24.2)
+    ci-queue (0.28.0)
     citrus (3.0.2)
     connection_pool (2.3.0)
     dead_end (4.0.0)
